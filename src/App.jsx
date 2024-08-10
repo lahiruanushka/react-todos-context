@@ -1,8 +1,66 @@
 import { useState } from "react";
-import "./App.css";
+import { useEffect } from "react";
+import { TodoProvider } from "./contexts";
+import TodoForm from "./components/TodoForm";
+import TodoItem from "./components/TodoItem";
 
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = (todo) => {
+    setTodos((prev) => [{ id: Date.now(), ...todo }, ...prev]);
+  };
+
+  const updateTodo = (id, todo) => {
+    setTodos((prev) =>
+      prev.map((prevTodo) => (prevTodo.id === todo.id ? todo : prevTodo))
+    );
+  };
+
+  const deleteTodo = (id) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  };
+
+  const toggleComplete = (id) => {
+    setTodos((prev) =>
+      prev.map((prevTodo) =>
+        prevTodo.id === id
+          ? { ...prevTodo, completed: !prevTodo.completed }
+          : prevTodo
+      )
+    );
+  };
+
+  useEffect(() => {
+    const todos = JSON.parse(localStorage.getItem("todos"));
+    if (todos && todos.length > 0) {
+      setTodos(todos);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  return (
+    <TodoProvider
+      value={{ todos, addTodo, updateTodo, deleteTodo, toggleComplete }}
+    >
+      <div className="bg-gray-900 min-h-screen py-8 text-white">
+        <div className="w-full max-w-2xl mx-auto bg-gray-800 shadow-lg rounded-lg px-6 py-8">
+          <h1 className="text-3xl font-bold text-center mb-8 mt-2 text-gray-100">
+            Manage Your Todos
+          </h1>
+          <TodoForm />
+          <div className="mt-4">
+            {todos.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </TodoProvider>
+  );
 }
 
 export default App;

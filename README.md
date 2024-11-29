@@ -58,11 +58,11 @@ react-todos-context-api/
 │   └── index.html
 ├── src/
 │   ├── components/
-│   │   ├── TodoForm.js
-│   │   └── TodoItem.js
+│   │   ├── TodoForm.jsx
+│   │   └── TodoItem.jsx
 │   ├── contexts/
-│   │   └── TodoContext.js
-│   ├── App.js
+│   │   └── TodoContext.jsx
+│   ├── App.jsx
 │   └── index.js
 ├── package.json
 └── README.md
@@ -70,7 +70,7 @@ react-todos-context-api/
 
 ## Key Components 🧩
 
-### App.js
+### App.jsx
 
 - Manages the overall application state
 - Handles todo operations (add, update, delete, toggle)
